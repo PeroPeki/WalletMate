@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile List</title>
+</head>
+<body>
+    <h1>User Profile List</h1>
+
+
+    <form method="get" action="">
+        <label for="created_at">Filtriraj po datumu (YYYY-MM-DD):</label>
+        <input type="date" id="created_at" name="created_at">
+        <button type="submit">Filtriraj</button>
+    </form>
+
+
+    
+    {% if userProfiles %}
+        <ul>
+            {% for profile in userProfiles %}
+                <li>
+                    <a href="{% url 'userProfile_detail' profile.id %}">
+                    Korisnik: {{ profile.user }}<br>
+                    Valuta: {{ profile.currency}} 
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Onemogućen prikaz korisničkih profila.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,4 +1,3 @@
-<!-- transaction_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +6,27 @@
 </head>
 <body>
     <h1>Transaction List</h1>
-    <ul>
-        {% for transaction in transactions %}
-            <li>{{ transaction.date }}: {{ transaction.transaction_type }} - {{ transaction.amount }} ({{ transaction.category.name }})</li>
-        {% endfor %}
-    </ul>
+
+    <form method="get" action="">
+        <label for="amount">Filtriraj po iznosu:</label>
+        <input type="number" id="amount" name="amount" step="1">
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if transactions %}
+        <ul>
+            {% for transaction in transactions %}
+                <li>
+                    <a href="{% url 'transaction_detail' transaction.id %}">
+                    Datum transakcije: {{ transaction.date }}
+                    Tip transakcije: {{ transaction.transaction_type|capfirst }} 
+                    Iznos transakcije: {{ transaction.amount }}
+                    Kategorija: ({{ transaction.category.name }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nema transakcija!</p>
+    {% endif %}
 </body>
 </html>

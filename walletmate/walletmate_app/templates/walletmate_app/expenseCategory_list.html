@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Category List</title>
+</head>
+<body>
+    <h1>Expense Category List</h1>
+
+
+    <form method="get" action="">
+        <label for="created_at">Filtriraj po datumu (YYYY-MM-DD):</label>
+        <input type="date" id="created_at" name="created_at">
+        <button type="submit">Filtriraj</button>
+    </form>
+
+    
+
+    {% if expenseCategories %}
+        <ul>
+            {% for expense in expenseCategories %}
+                <li>
+                    <a href="{% url 'expenseCategory_detail' expense.id %}">
+                    Kategorija: {{ expense.name }}: 
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nema kategorija!</p>
+    {% endif %}
+</body>
+</html>

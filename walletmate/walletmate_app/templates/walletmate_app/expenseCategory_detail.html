@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalji kategorije</title>
+</head>
+<body>
+    <h1><strong>Detalji kategorije</strong></h1>
+
+    <p><strong>Kategorija: </strong> {{ expenseCategories.name }}</p>
+    <p><strong>Opis: </strong> {{ expenseCategories.description }}</p>
+    <p><strong>Kreirano: </strong> {{ expenseCategories.created_at }}</p>
+    <p><strong>Zadnje ažurirano:</strong> {{ expenseCategories.updated_at }}</p>
+    
+
+    <a href="{% url 'expenseCategory_list' %}">Povratak</a>
+</body>
+</html>

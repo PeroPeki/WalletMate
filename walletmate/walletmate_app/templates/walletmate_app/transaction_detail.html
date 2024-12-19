@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalji transakcije</title>
+</head>
+<body>
+    <h1><strong>Detalji transakcije</strong></h1>
+
+    <p><strong>Korisnik</strong> {{ transactions.user }}</p>
+    <p><strong>Tip transakcije:</strong> {{ transactions.transaction_type }}</p>
+    <p><strong>Iznos:</strong> {{ transactions.amount }}</p>
+    <p><strong>Kategorija:</strong> {{ transactions.category.name }}</p>
+    <p><strong>Datum:</strong> {{ transactions.date }}</p>
+    <p><strong>Opis transakcije:</strong> {{ transactions.description }}</p>
+    <p><strong>Kreirano:</strong> {{ transactions.created_at }}</p>
+    <p><strong>Zadnje ažurirano:</strong> {{ transactions.updated_at }}</p>
+    
+
+    <a href="{% url 'transaction_list' %}">Povratak</a>
+</body>
+</html>

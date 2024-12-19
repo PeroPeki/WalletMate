@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Budget List</title>
+</head>
+<body>
+    <h1>Budget List</h1>
+
+    <form method="get" action="">
+        <label for="amount">Filtriraj po iznosu:</label>
+        <input type="number" id="amount" name="amount" step="1">
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if budgets %}
+        <ul>
+            {% for budget in budgets %}
+                <li>
+                    <a href="{% url 'budget_detail' budget.id %}">
+                    Korisnik: {{ budget.user.username }}<br>
+                    Količina: {{ budget.amount }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Onemogućen prikaz budžeta.</p>
+    {% endif %}
+</body>
+</html>

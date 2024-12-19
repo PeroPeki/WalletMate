@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalji korisnika</title>
+</head>
+<body>
+    <h1><strong>Detalji korisnika</strong></h1>
+
+    <p><strong>Korisnik: </strong> {{ userProfiles.user }}</p>
+    <p><strong>Valuta: </strong> {{ userProfiles.currency }}</p>
+    <p><strong>Kreirano: </strong> {{ userProfiles.created_at }}</p>
+    <p><strong>Zadnje ažurirano:</strong> {{ userProfiles.updated_at }}</p>
+    
+
+    <a href="{% url 'userProfile_list' %}">Povratak</a>
+
+
+</body>
+</html>

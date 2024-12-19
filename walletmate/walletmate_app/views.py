@@ -1,14 +1,13 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from .models import Transaction
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.utils import timezone
+from django.views.generic import ListView, DetailView
+from .models import Transaction, ExpenseCategory, UserProfile, Budget
 
 homepage_text = "Promijeni!"
-
 
 def is_admin(user):
     return user.groups.filter(name='Admin').exists()
@@ -16,7 +15,7 @@ def is_admin(user):
 def index(request):
     global homepage_text
 
-    if request.method == "POST" and request.user.groups.filter(name='Admin').exists():
+    if request.method == "POST" and is_admin(request.user):
         new_text = request.POST.get("homepage_text")
         if new_text.strip():
             homepage_text = new_text
@@ -24,7 +23,7 @@ def index(request):
 
     context = {
         'homepage_text': homepage_text,
-        'is_admin': request.user.groups.filter(name='Admin').exists(),
+        'is_admin': is_admin(request.user),
     }
     return render(request, 'walletmate_app/index.html', context)
 
@@ -32,20 +31,124 @@ def index(request):
 def admin_view(request):
     return render(request, 'admin_page.html')
 
+### LIST VIEWS
 
-@login_required
-def transaction_list(request):
-    if request.user.groups.filter(name='Admin').exists():
-        transactions = Transaction.objects.all()
-    else:
-        transactions = Transaction.objects.filter(user=request.user)
-    return render(request, 'walletmate_app/transaction_list.html', {'transactions': transactions})
+class TransactionList(ListView):
+    model = Transaction
+    template_name = 'walletmate_app/transaction_list.html'
+    context_object_name = 'transactions'
 
+    def get_queryset(self):
+        queryset = Transaction.objects.all()
+        amount = self.request.GET.get('amount')
+        if amount:
+            try:
+                amount = int(amount)
+                queryset = queryset.filter(amount=amount)
+            except ValueError:
+                pass
+        return queryset
+
+class ExpenseCategoryList(ListView):
+    model = ExpenseCategory
+    template_name = 'walletmate_app/expenseCategory_list.html'
+    context_object_name = 'expenseCategories'
+
+    def get_queryset(self):
+        created_at = self.kwargs.get('created_at')
+        queryset = ExpenseCategory.objects.all()
+        if created_at:
+            try:
+                created_at_date = timezone.datetime.strptime(created_at, "%Y-%m-%d").date()
+                queryset = queryset.filter(created_at__date=created_at_date)
+            except ValueError:
+                pass
+        return queryset
+
+class UserProfileList(ListView):
+    model = UserProfile
+    template_name = 'walletmate_app/userProfile_list.html'
+    context_object_name = 'userProfiles'
+
+    def get_queryset(self):
+        created_at = self.kwargs.get('created_at')
+        queryset = UserProfile.objects.all()
+        if created_at:
+            try:
+                created_at_date = timezone.datetime.strptime(created_at, "%Y-%m-%d").date()
+                queryset = queryset.filter(created_at__date=created_at_date)
+            except ValueError:
+                pass
+        return queryset
+
+class BudgetList(ListView):
+    model = Budget
+    template_name = 'walletmate_app/budget_list.html'
+    context_object_name = 'budgets'
+
+    def get_queryset(self):
+        queryset = Transaction.objects.all()
+        amount = self.kwargs.get('amount')
+        if amount:
+            try:
+                amount = int(amount)
+                queryset = queryset.filter(amount=amount)
+            except ValueError:
+                pass
+        
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(user__username__icontains=search_query)
+        return queryset #tu
+
+
+### DETAIL VIEWS
+
+class TransactionDetail(DetailView):
+    model = Transaction
+    template_name = 'walletmate_app/transaction_detail.html'
+    context_object_name = 'transactions'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.now()
+        return context
+    
+class ExpenseCategoryDetail(DetailView):
+    model = ExpenseCategory
+    template_name = 'walletmate_app/expenseCategory_detail.html'
+    context_object_name = 'expenseCategories'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.now()
+        return context   
+
+class UserProfileDetail(DetailView):
+    model = UserProfile
+    template_name = 'walletmate_app/userProfile_detail.html'
+    context_object_name = 'userProfiles'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.now()
+        return context
+    
+class BudgetDetail(DetailView):
+    model = Budget
+    template_name = 'walletmate_app/budget_detail.html'
+    context_object_name = 'budgets'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["now"] = timezone.now()
+        return context
+
+### REGISTRATION/LOGIN
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data['username']
@@ -58,7 +161,6 @@ def register(request):
             login(request, user)
 
             return redirect('index')
-
     else:
         form = UserCreationForm()
 

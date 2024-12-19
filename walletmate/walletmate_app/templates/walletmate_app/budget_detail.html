@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalji budžeta</title>
+</head>
+<body>
+    <h1><strong>Detalji budžeta</strong></h1>
+
+    <p><strong>Korisnik: </strong> {{ budgets.user }}</p>
+    <p><strong>Kategorija: </strong> {{ budgets.category.name|default:"Nepoznato" }}</p>
+    <p><strong>Iznos: </strong> {{ budgets.amount }}</p>
+    <p><strong>Datum početka: </strong> {{ budgets.start_date }}</p>
+    <p><strong>Datum kraja: </strong> {{ budgets.end_date }}</p>
+    <p><strong>Kreirano: </strong> {{ budgets.created_at }}</p>
+    <p><strong>Zadnje ažurirano:</strong> {{ budgets.updated_at }}</p>
+    
+
+    <a href="{% url 'budget_list' %}">Povratak</a>
+</body>
+</html>
