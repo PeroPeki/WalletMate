@@ -1,4 +1,4 @@
-# projekti_web
+# WalletMate
 Privremeni repozitorij za projektne zadatke iz kolegija Programiranje za web. Nakon završetka projektnih zadataka, sadržaj ovoga repozitorija i repozitorija kojim upravlja kolega biti će merge-an u zajednički repozitorij u kojemu će biti izrađen završni projekt.
 
 WalletMate je aplikacija za upravljanje osobnim financijama, odnosno aplikacija koja će korisniku omogućiti unos transakcija, budžeta te kategorija trošenja. Također će biti omogućen i prikaz korisničkih profila onim korisnicima s većim privilegijama (admin).
