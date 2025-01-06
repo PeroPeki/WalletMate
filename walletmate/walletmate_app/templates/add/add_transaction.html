@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction</title>
+</head>
+<body>
+
+    <h1>Add Transaction</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="user">Korisnik:</label>
+        <select id="user" name="user" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="category">Kategorija:</label>
+        <select id="category" name="category" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="amount">Iznos:</label>
+        <input type="number" id="amount" name="amount" step="0.01" required>
+        <br><br>
+
+        <label for="transaction_type">Tip transakcije:</label>
+        <select id="transaction_type" name="transaction_type" required>
+            <option value="income">Prihod</option>
+            <option value="expense">Trošak</option>
+        </select>
+        <br><br>
+
+        <label for="description">Opis:</label>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea>
+        <br><br>
+
+        <label for="date">Datum:</label>
+        <input type="date" id="date" name="date" required>
+        <br><br>
+
+
+        <button type="submit">Dodaj transakciju</button>
+    </form>
+
+    <br>
+    <a href="{% url 'transaction_list' %}">Povratak na popis transakcija</a>
+
+</body>
+</body>
+</html>

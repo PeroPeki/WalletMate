@@ -13,8 +13,32 @@
     <p><strong>Kreirano: </strong> {{ userProfiles.created_at }}</p>
     <p><strong>Zadnje ažurirano:</strong> {{ userProfiles.updated_at }}</p>
     
+    <br>
+    <form method="get" action="{% url 'update_user' pk=userProfiles.pk %}">
+        <button type="submit">Uredi</button>
+    </form>
+
+    <form id="delete-form" method="post" action="{% url 'delete_user' pk=userProfiles.pk %}">
+        {% csrf_token %}
+        <button 
+            type="button" 
+            style="background-color: red; color: white;" 
+            onclick="confirmDelete()">Izbriši
+        </button>
+    </form>
+    
 
     <a href="{% url 'userProfile_list' %}">Povratak</a>
+
+
+    <script>
+        function confirmDelete() {
+            const confirmed = confirm("Jeste li sigurni da želite izbrisati ovog korisnika?");
+            if (confirmed) {
+                document.getElementById('delete-form').submit();
+            }
+        }
+    </script>
 
 
 </body>

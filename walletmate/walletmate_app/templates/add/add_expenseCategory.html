@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense Category</title>
+</head>
+<body>
+
+    <h1>Add Expense Category</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="name">Kategorija:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="description">Opis:</label>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="Unesite opis (opcionalno)"></textarea><br><br>
+
+        <button type="submit">Dodaj kategoriju</button>
+    </form>
+    <a href="{% url 'expenseCategory_list' %}">Povratak</a>
+    
+</body>
+</html>

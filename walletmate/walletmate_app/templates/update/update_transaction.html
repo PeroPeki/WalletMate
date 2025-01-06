@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Transaction</title>
+</head>
+<body>
+
+    <h1>Ažuriraj Transakciju</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Spremi</button>
+    </form>
+
+    <a href="{% url 'transaction_detail' pk=transaction.pk %}">Povratak</a>
+    
+</body>
+</html>

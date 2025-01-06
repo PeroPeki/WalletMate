@@ -15,8 +15,32 @@
     <p><strong>Datum kraja: </strong> {{ budgets.end_date }}</p>
     <p><strong>Kreirano: </strong> {{ budgets.created_at }}</p>
     <p><strong>Zadnje ažurirano:</strong> {{ budgets.updated_at }}</p>
+
+    <form method="get" action="{% url 'update_budget' pk=budgets.pk %}">
+        <button type="submit">Uredi</button>
+    </form>
+
+    <form id="delete-form" method="post" action="{% url 'delete_budget' pk=budgets.pk %}">
+        {% csrf_token %}
+        <button 
+            type="button" 
+            style="background-color: red; color: white;" 
+            onclick="confirmDelete()">Izbriši
+        </button>
+    </form>
     
 
     <a href="{% url 'budget_list' %}">Povratak</a>
+
+    <script>
+        function confirmDelete() {
+            const confirmed = confirm("Jeste li sigurni da želite izbrisati ovaj budžet?");
+            if (confirmed) {
+                document.getElementById('delete-form').submit();
+            }
+        }
+    </script>
+    
+
 </body>
 </html>

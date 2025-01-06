@@ -7,6 +7,12 @@
 <body>
     <h1>Budget List</h1>
 
+    <form method="get" action="{% url 'add_budget' %}" style="margin-bottom: 20px;">
+        <button type="submit" style="padding: 10px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Add Budget
+        </button>
+    </form>
+
     <form method="get" action="">
         <label for="amount">Filtriraj po iznosu:</label>
         <input type="number" id="amount" name="amount" step="1">
