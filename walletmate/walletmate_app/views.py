@@ -7,6 +7,13 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import *
 from django.urls import reverse, reverse_lazy
+from rest_framework.viewsets import ModelViewSet
+from walletmate_app.serializers import *
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 homepage_text = "Promijeni!"
 
@@ -332,3 +339,29 @@ class ExpenseCategoryDelete(DeleteView):
 class UserDelete(DeleteView):
     model = UserProfile
     success_url = reverse_lazy('userProfile_list')
+
+
+class TransactionViewSet(ModelViewSet):
+    serializer_class = TransactionSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user)
+    
+
+class TransactionList(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        transactions = Transaction.objects.filter(user=request.user)
+        serializer = TransactionSerializer(transactions, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = TransactionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

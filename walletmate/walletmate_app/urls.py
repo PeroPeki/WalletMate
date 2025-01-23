@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import ObtainAuthToken
 
 urlpatterns = [
     path('', index, name='index'),
@@ -30,4 +32,16 @@ urlpatterns = [
     path('admin/', admin_view, name='admin_view'),
     path('register/', register, name='register'),
     path('logout/', logout_view, name='logout'),
+]
+
+
+
+router = DefaultRouter()
+router.register(r'api/transactions', TransactionViewSet, basename='transaction')
+
+# Add router-generated URLs to urlpatterns
+urlpatterns += router.urls
+
+urlpatterns += [
+    path('api/token/', ObtainAuthToken.as_view(), name='api_token_auth'),
 ]
